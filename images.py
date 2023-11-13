@@ -1,5 +1,8 @@
 """File containing the Image class."""
 
+import csv
+import _csv
+
 class Image:
     """
     A class representing one image.
@@ -102,3 +105,40 @@ class Image:
             all_image_labels = list(buffered_reader.read()[8:])
 
         return all_image_labels
+
+    @staticmethod
+    def save_image_bytes_and_labels(file_images: str, file_labels: str,
+                                    path_to_output: str) -> None:
+        """
+        Read the image bytes and labels from an IDX file & save them in a CSV file.
+
+        Parameters
+        ----------
+        file_images: str
+            Path to the file containing the bytes for the images.
+        file_labels: str
+            Path to the file containing the bytes for the image labels.
+        path_to_output: str
+            Path to the output file.
+
+        See Also
+        --------
+        read_image_pixels: Reading of image pixels from an IDX file.
+        read_image_labels: Reading the image labels from an IDX file.
+
+        """
+        # Get the image labels and pixels
+        all_image_labels = Image.read_image_labels(file_labels)
+        all_image_pixels = Image.read_image_pixels(file_images)
+
+        with open(path_to_output, 'w', encoding='utf-8') as buffered_writer:
+            # Initialize the writer of the CSV file
+            writer: _csv._writer = csv.writer(buffered_writer)
+
+            # Iterate over all images
+            for pixels, label in zip(all_image_pixels, all_image_labels):
+                # Add the image label to the image pixels
+                pixels.insert(0, label)
+
+                # Write the image label and the image pixel combined into one line
+                writer.writerow(pixels)

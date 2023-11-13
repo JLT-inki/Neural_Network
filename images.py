@@ -36,7 +36,7 @@ class Image:
         self.actual_number = actual_number
 
     @staticmethod
-    def read_image_pixels(file: str) -> list[list[float]]:
+    def read_image_pixels_from_idx(file: str) -> list[list[float]]:
         """
         Read the image bytes from an IDX file.
 
@@ -83,7 +83,7 @@ class Image:
         return all_image_pixels
 
     @staticmethod
-    def read_image_labels(file: str) -> list[int]:
+    def read_image_labels_from_idx(file: str) -> list[int]:
         """
         Read the image labels from an IDX file.
 
@@ -123,13 +123,13 @@ class Image:
 
         See Also
         --------
-        read_image_pixels: Reading of image pixels from an IDX file.
-        read_image_labels: Reading the image labels from an IDX file.
+        read_image_pixels_from_idx: Reading of image pixels from an IDX file.
+        read_image_labels_from_idx: Reading the image labels from an IDX file.
 
         """
         # Get the image labels and pixels
-        all_image_labels = Image.read_image_labels(file_labels)
-        all_image_pixels = Image.read_image_pixels(file_images)
+        all_image_labels = Image.read_image_labels_from_idx(file_labels)
+        all_image_pixels = Image.read_image_pixels_from_idx(file_images)
 
         with open(path_to_output, 'w', encoding='utf-8') as buffered_writer:
             # Initialize the writer of the CSV file

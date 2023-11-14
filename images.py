@@ -136,14 +136,17 @@ class Image:
         all_image_labels = Image.read_image_labels_from_idx(file_labels)
         all_image_pixels = Image.read_image_pixels_from_idx(file_images)
 
+        # Define the table header
+        header = ['label', 'pixels']
+
         with open(path_to_output, 'w', encoding='utf-8') as buffered_writer:
             # Initialize the writer of the CSV file
             writer: _csv._writer = csv.writer(buffered_writer)
 
+            # Write the header
+            writer.writerow(header)
+
             # Iterate over all images
             for pixels, label in zip(all_image_pixels, all_image_labels):
                 # Add the image label to the image pixels
-                pixels.insert(0, label)
-
-                # Write the image label and the image pixel combined into one line
-                writer.writerow(pixels)
+                writer.writerow([label, pixels])

@@ -1,5 +1,8 @@
 """File containing the Image class."""
 
+# Import necessary for create_images_from_csv method
+from __future__ import annotations
+
 import csv
 import _csv
 
@@ -150,3 +153,54 @@ class Image:
             for pixels, label in zip(all_image_pixels, all_image_labels):
                 # Add the image label to the image pixels
                 writer.writerow([label, pixels])
+
+    @staticmethod
+    def create_images_from_csv(path_to_csv_file: str) -> list[Image]:
+        """
+        Read a CSV file and create an image per line that is read.
+
+        Parameters
+        ----------
+        path_to_csv_file: str
+            Path to the CSV file that is read.
+
+        Returns
+        -------
+        image_list: list[Image]
+            List containing all the images created.
+
+        Notes
+        -----
+        The pixels are saved as string in the format of '[X.X, X.X, ..., X.X]'.
+        To convert it into a list of floats, the first and last char are removed
+        (the '[' and ']'). Afterwards they are split with teh separator ', ', to
+        get a list of strings in the format of 'X.X'. Finally, they can then be
+        converted to floats.
+
+        Import in line 4 is necessary for type hints of this function as the type
+        'Image' is used as a forward reference here (see index 563 of the
+        Python Enhancement Proposals [PEP 563]).
+
+        """
+        # Initialize the return value
+        image_list: list[Image] = []
+
+        # Open the file
+        with open(path_to_csv_file, 'r', encoding='utf-8') as csv_file:
+            csv_reader = csv.DictReader(csv_file)
+
+            # Read each row
+            for row in csv_reader:
+                # Read the label and convert it into an integer
+                label = int(row['label'])
+
+                # Read the pixels and convert it into a list of float
+                pixels = [
+                    float(pixel) for pixel in
+                    row['pixels'][1:][:-1].split(', ')]
+
+                # Create an image object and add it to the return value
+                image_list.append(Image(pixels, label))
+
+        # Return the list of all images created
+        return image_list

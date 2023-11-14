@@ -16,7 +16,12 @@ class Image:
 
     Methods
     -------
-    tbd.
+    read_image_pixels_from_idx
+        Read the image bytes from an IDX file.
+    read_image_labels_from_idx
+        Read the image labels from an IDX file.
+    save_image_bytes_and_labels
+        Read the image bytes and labels from an IDX file & save them in a CSV file.
 
     """
 
@@ -49,7 +54,7 @@ class Image:
         -------
         all_image_pixels: list[list[float]]
             A List containing lists of 784 floats, with each list representing
-            one image of 28x28 (784) pixels. The values are in range of [0; 1]
+            one image of 28x28 (784) pixels. The values are in range of [0; 1].
 
         Notes
         -----
@@ -96,7 +101,7 @@ class Image:
         -------
         all_image_labels
             A list containing all the image labels. Each label is an integer
-            representing the number that the 784 pixels represent
+            representing the number that the 784 pixels represent.
 
         """
         # Open the file

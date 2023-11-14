@@ -78,7 +78,7 @@ class Image:
                 current_image_number += 1
 
             # Append the converted byte
-            all_image_pixels[current_image_number].append(image_byte / 256)
+            all_image_pixels[current_image_number].append(image_byte / 255)
 
         return all_image_pixels
 

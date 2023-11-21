@@ -1,3 +1,12 @@
-__pycache__
-.venv/
+# Ignore auto-generated folders
+__pycache__/
 .vscode/
+.mypy_cache/
+
+# Ignore python virtual environments (some typical namings)
+env/
+venv/
+.venv/
+
+# Ignore all .csv files since as their size can be >100MB
+*.csv

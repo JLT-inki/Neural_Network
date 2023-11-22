@@ -8,5 +8,5 @@ env/
 venv/
 .venv/
 
-# Ignore all .csv files since as their size can be >100MB
-*.csv
+# Ignore pixel & label csv files since their size >50MB
+src/images/input/csv/

@@ -67,9 +67,9 @@ class Image:
 
         """
         # Open the file
-        with open(file, 'rb') as buffered_reader:
+        with open(file, 'rb') as idx_file:
             # Ignore the first 16 bytes since the image bytes only start at offset 16
-            images = list(buffered_reader.read()[16:])
+            images = list(idx_file.read()[16:])
 
         # Initialize the return value
         all_image_pixels: list[list[float]] = []
@@ -108,9 +108,9 @@ class Image:
 
         """
         # Open the file
-        with open(file, 'rb') as buffered_reader:
+        with open(file, 'rb') as idx_file:
             # Ignore the first 8 bytes since the image labels only start at offset 8
-            all_image_labels = list(buffered_reader.read()[8:])
+            all_image_labels = list(idx_file.read()[8:])
 
         return all_image_labels
 
@@ -142,17 +142,17 @@ class Image:
         # Define the table header
         header = ['label', 'pixels']
 
-        with open(path_to_output, 'w', encoding='utf-8') as buffered_writer:
+        with open(path_to_output, 'w', encoding='utf-8') as csv_file:
             # Initialize the writer of the CSV file
-            writer: _csv._writer = csv.writer(buffered_writer)
+            csv_writer: _csv._writer = csv.writer(csv_file)
 
             # Write the header
-            writer.writerow(header)
+            csv_writer.writerow(header)
 
             # Iterate over all images
             for pixels, label in zip(all_image_pixels, all_image_labels):
                 # Add the image label to the image pixels
-                writer.writerow([label, pixels])
+                csv_writer.writerow([label, pixels])
 
     @staticmethod
     def create_images_from_csv(path_to_csv_file: str) -> list[Image]:
@@ -187,7 +187,7 @@ class Image:
 
         # Open the file
         with open(path_to_csv_file, 'r', encoding='utf-8') as csv_file:
-            csv_reader = csv.DictReader(csv_file)
+            csv_reader: csv.DictReader = csv.DictReader(csv_file)
 
             # Read each row
             for row in csv_reader:

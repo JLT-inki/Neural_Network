@@ -43,6 +43,30 @@ class Image:
         self.pixels = pixels
         self.actual_number = actual_number
 
+    def get_pixels(self) -> list[float]:
+        """
+        Return the pixels of the image.
+
+        Returns
+        -------
+        self.pixels
+            The 28x28 (784) pixels of one image.
+
+        """
+        return self.pixels
+
+    def get_actual_number(self) -> int:
+        """
+        Return the actual number of the image.
+
+        Returns
+        -------
+        self.actual_number
+            The actual number that is drawn on the image.
+
+        """
+        return self.actual_number
+
     @staticmethod
     def read_image_pixels_from_idx(file: str) -> list[list[float]]:
         """

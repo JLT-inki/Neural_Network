@@ -1,4 +1,4 @@
-"""File containing the weight class."""
+"""File containing the WeightMatrix class."""
 
 from __future__ import annotations
 from pathlib import Path
@@ -45,7 +45,7 @@ class WeightMatrix:
 
         Returns
         -------
-        self.weights
+        self.weights: list[list[float]]
             List of lists of floats representing individual weights.
 
         """

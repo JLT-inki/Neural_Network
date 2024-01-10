@@ -11,6 +11,8 @@ max-line-length: 88
 
 bandit:
   run: true
+  options:
+    config: .bandit.yml
 
 dodgy:
   run: true

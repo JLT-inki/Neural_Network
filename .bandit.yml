@@ -1,0 +1,2 @@
+# Ignore B311 as the random generator used isn't used for security purposes
+skips: ['B311']

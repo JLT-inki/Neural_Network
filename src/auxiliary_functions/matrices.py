@@ -1,4 +1,4 @@
-"""File containing several auxiliary functions used for the neural network."""
+"""File containing functions for working with matrices."""
 
 def matrix_multiplication(matrix_1: list[list[float]],
                           matrix_2: list[list[float]]

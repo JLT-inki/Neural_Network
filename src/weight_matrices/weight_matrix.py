@@ -7,7 +7,9 @@ import ast
 import csv
 import _csv
 
-class WeightMatrix:
+import matrix
+
+class WeightMatrix(matrix.Matrix):
     """
     A class representing one weight matrix.
 
@@ -37,19 +39,10 @@ class WeightMatrix:
             List of lists of floats representing individual weights.
 
         """
-        self.weights = weights
+        matrix.Matrix.__init__(self, weights)
 
-    def get_weights(self) -> list[list[float]]:
-        """
-        Return the weight matrix.
-
-        Returns
-        -------
-        self.weights: list[list[float]]
-            List of lists of floats representing individual weights.
-
-        """
-        return self.weights
+        if self.get_is_vector():
+            raise TypeError("Weight matrix can't be a vector.")
 
     @staticmethod
     def write_weights(path_to_output: str,
@@ -89,8 +82,8 @@ class WeightMatrix:
             csv_writer.writerow(header)
 
             # Write each weight matrix
-            for matrix in weight_matrices:
-                csv_writer.writerow([matrix.get_weights()])
+            for weight_matrix in weight_matrices:
+                csv_writer.writerow([weight_matrix.get_values()])
 
     @staticmethod
     def create_weights_from_csv(path_to_csv_file: str) -> list[WeightMatrix]:

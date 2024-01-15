@@ -11,17 +11,10 @@ import matrix
 
 class WeightMatrix(matrix.Matrix):
     """
-    A class representing one weight matrix.
-
-    Attributes
-    ----------
-    weights: list[list[float]]
-        List of lists of floats representing individual weights.
+    A class representing one weight matrix. Inherits from the class Matrix.
 
     Methods
     -------
-    get_weights
-        Return the weight matrix.
     write_weights
         Write weight matrices into a CSV file.
     create_weights_from_csv
@@ -29,7 +22,7 @@ class WeightMatrix(matrix.Matrix):
 
     """
 
-    def __init__(self, weights: list[list[float]]) -> None:
+    def __init__(self, values: list[list[float]]) -> None:
         """
         Construct one WeightMatrix object with the given attributes.
 
@@ -39,7 +32,7 @@ class WeightMatrix(matrix.Matrix):
             List of lists of floats representing individual weights.
 
         """
-        matrix.Matrix.__init__(self, weights)
+        matrix.Matrix.__init__(self, values)
 
         if self.get_is_vector():
             raise TypeError("Weight matrix can't be a vector.")

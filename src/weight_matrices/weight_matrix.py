@@ -28,7 +28,7 @@ class WeightMatrix(matrix.Matrix):
 
         Parameters
         ----------
-        weights: list[list[float]]
+        values: list[list[float]]
             List of lists of floats representing individual weights.
 
         """

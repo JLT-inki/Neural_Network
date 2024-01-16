@@ -11,7 +11,7 @@ class Matrix:
     values: list[int | float] | list[list[int | float]]
         Values stored in the matrix.
     is_vector: bool
-        Boolean to indicate whether the matrix is a vector.
+        Flag indicating whether the matrix is a vector.
 
     Methods
     -------
@@ -19,6 +19,10 @@ class Matrix:
         Return the values stored in the matrix.
     get_is_vector
         Indicate whether the matrix is a vector.
+    set_values
+        Set the values of the matrix.
+    set_is_vector
+        Set flag indicating whether matrix is a vector.
     get_number_of_rows
         Return the number of rows.
     get_number_of_columns
@@ -27,8 +31,10 @@ class Matrix:
         Check whether all rows of a given matrix have the same length.
     is_matrix
         Check if given values represent a matrix or a vector.
-     def matrix_multiplication
+    matrix_multiplication
         Multiplicate two given matrices.
+    invert
+        Invert the matrix and overwrite the values.
 
     """
 
@@ -42,8 +48,11 @@ class Matrix:
             Values stored in the matrix.
 
         """
-        self.values = values
-        self.is_vector: bool = not isinstance(values[0], list)
+        self.set_values(values)
+
+        # Determine whether matrix is a vector or not and set flag accordingly
+        is_vector: bool = isinstance(values[0], (int, float))
+        self.set_is_vector(is_vector)
 
         if not self.is_matrix():
             raise TypeError("Matrix can only contain numbers.")
@@ -74,6 +83,30 @@ class Matrix:
 
         """
         return self.is_vector
+
+    def set_values(self, values: list[int | float] | list[list[int | float]]) -> None:
+        """
+        Set the values of the matrix.
+
+        Parameters
+        ----------
+        values: list[int | float] | list[list[int | float]]
+            Values stored in the matrix.
+
+        """
+        self.values = values
+
+    def set_is_vector(self, is_vector: bool) -> None:
+        """
+        Set flag indicating whether matrix is a vector.
+
+        Parameters
+        ----------
+        is_vector: bool
+            Flag indicating whether the matrix is a vector.
+
+        """
+        self.is_vector: bool = is_vector
 
     def get_number_of_rows(self) -> int:
         """
@@ -208,3 +241,25 @@ class Matrix:
                         matrix_product[i][j] += number_matrix_1 * values_2[k][j]
 
         return Matrix(matrix_product)
+
+    def invert(self) -> None:
+        """Invert the matrix and overwrite the values."""
+        # The matrix is a vector
+        if self.get_is_vector() and self.get_number_of_rows() > 1:
+            self.set_values([self.get_values()])
+            self.set_is_vector(False)
+        # The matrix only has one row
+        elif self.get_number_of_rows() == 1:
+            self.set_values(list(self.get_values()[0]))
+        else:
+            original_values: list[list[int | float]] = self.get_values()
+            values_inverted: list[list[int | float]] = []
+
+            for col in range(self.get_number_of_columns()):
+                # For each column add a new row
+                values_inverted.append([])
+
+                for row in range(self.get_number_of_rows()):
+                    values_inverted[col].append(original_values[row][col])
+
+            self.set_values(values_inverted)

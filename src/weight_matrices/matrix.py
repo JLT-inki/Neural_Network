@@ -201,6 +201,12 @@ class Matrix:
             If the number of columns of the first matrix is not equal to the number of
             rows of the second matrix.
 
+        Notes
+        -----
+        Import in line 4 is necessary for type hints of this function as the type
+        'Matrix' is used as a forward reference here (see index 563 of the
+        Python Enhancement Proposals [PEP 563]).
+
         """
         # Check if the two given matrices can be multiplicated
         if matrix_1.get_number_of_columns() != matrix_2.get_number_of_rows():

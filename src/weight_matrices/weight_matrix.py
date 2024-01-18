@@ -34,9 +34,6 @@ class WeightMatrix(matrix.Matrix):
         """
         matrix.Matrix.__init__(self, values)
 
-        if self.get_is_vector():
-            raise TypeError("Weight matrix can't be a vector.")
-
     @staticmethod
     def write_weights(path_to_output: str,
                       weight_matrices: list[WeightMatrix]) -> None:

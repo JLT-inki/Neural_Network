@@ -9,10 +9,10 @@ import weight_matrix
 MATRICES_PATH: str = "./weights"
 
 # Dimensions of the weight matrices as list of tuples in the form of {rows, columns}
-MATRICES_DIMENSIONS: list[tuple[int, int]] = [(784, 100), (100, 10)]
+MATRICES_DIMENSIONS: list[tuple[int, int]] = [(81, 784), (10, 81)]
 
 def main() -> int:
-    """Create weight matrices with random values and save them in a CSV file."""
+    """Create weight matrices via the Xavier Initialization and save them in a CSV file."""
     try:
         # Check if weight matrices were already created
         folder_content = os.listdir(MATRICES_PATH)
@@ -41,15 +41,16 @@ def main() -> int:
         weight_matrices: list[weight_matrix.WeightMatrix] = []
 
         for dimensions in MATRICES_DIMENSIONS:
+            variance = 1 / dimensions[1]
             # Create random values in range of [0; 1] for the weight matrices
             values: list[list[float]] = [[
-                random.random() for _ in range(dimensions[1])]
+                random.uniform(-variance, variance) / 10 for _ in range(dimensions[1])]
                 for __ in range(dimensions[0])]
 
-            weight_matrices.append(weight_matrix.WeightMatrix(values))
+            weight_matrices.append(values)
 
         # Write the weights into a csv file
-        weight_matrix.WeightMatrix.write_weights(
+        weight_matrix.write_weights(
             MATRICES_PATH + "/weight_matrices.csv", weight_matrices)
 
         # Return exitcode 0, indicating success

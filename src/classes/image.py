@@ -19,12 +19,18 @@ class Image:
 
     Methods
     -------
+    get_pixels
+        Return the pixels of the image.
+    get_actual_number
+        Return the actual number of the image.
     read_image_pixels_from_idx
         Read the image bytes from an IDX file.
     read_image_labels_from_idx
         Read the image labels from an IDX file.
     save_image_bytes_and_labels
         Read the image bytes and labels from an IDX file & save them in a CSV file.
+    initialize_training_and_testing_data
+        Read both training & testing images from IDX and save them in CSV files.
 
     """
 
@@ -153,11 +159,6 @@ class Image:
         path_to_output: str
             Path to the output file.
 
-        See Also
-        --------
-        read_image_pixels_from_idx: Reading of image pixels from an IDX file.
-        read_image_labels_from_idx: Reading the image labels from an IDX file.
-
         """
         # Get the image labels and pixels
         all_image_labels = Image.read_image_labels_from_idx(file_labels)
@@ -228,3 +229,29 @@ class Image:
 
         # Return the list of all images created
         return image_list
+
+    @staticmethod
+    def initialize_training_and_testing_data(
+        idx_path: str, csv_path: str, idx_files: list[tuple[str, str]],
+        csv_files) -> None:
+        """
+        Read both training & testing images from IDX and save them in CSV files.
+
+        Parameters
+        ----------
+        idx_path: str
+            Path to the folder in which the IDX files are stored.
+        csv_path: str
+            Path in which the CSV files shall be stored.
+        idx_files: list[tuple[str, str]]
+            Names of the IDX files. The first string of each tuple is the file
+            containing the pixel values while the second file is the file containing
+            the image labels, aka the actual numbers of the images.
+        csv_files
+            Names that the created CSV files shall have.
+
+        """
+        for idx_file, csv_file in zip(idx_files, csv_files):
+            Image.save_image_bytes_and_labels(
+                idx_path + idx_file[0], idx_path + idx_file[1],
+                csv_path + csv_file)

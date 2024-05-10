@@ -145,8 +145,9 @@ class Image:
         return all_image_labels
 
     @staticmethod
-    def save_image_bytes_and_labels(file_images: str, file_labels: str,
-                                    path_to_output: str) -> None:
+    def save_image_bytes_and_labels(
+        file_images: str, file_labels: str, path_to_output: str
+    ) -> None:
         """
         Read the image bytes and labels from an IDX file & save them in a CSV file.
 
@@ -232,8 +233,8 @@ class Image:
 
     @staticmethod
     def initialize_training_and_testing_data(
-        idx_path: str, csv_path: str, idx_files: list[tuple[str, str]],
-        csv_files) -> None:
+        idx_path: str, csv_path: str, idx_files: list[tuple[str, str]], csv_files
+    ) -> None:
         """
         Read both training & testing images from IDX and save them in CSV files.
 

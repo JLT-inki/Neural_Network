@@ -1,6 +1,6 @@
 """File containing the NeuralNetwork class."""
 
-#Import used Python libraries
+# Import used Python libraries
 import pathlib
 import random
 import sys
@@ -8,19 +8,68 @@ import csv
 import ast
 import os
 
-# Import used classes
-from classes.image import Image
-
 # Import used types
 from csv import DictReader
 import _csv
+
+# Import used classes
+from classes.image import Image
 
 # Define Euler's Number as a global constant
 EULERS_NUMBER: float = 2.718281828459045
 
 class NeuralNetwork:
     """
-    TBD!!!!
+    A class representing the neural network.
+
+    Attributes
+    ----------
+    dimensions: list[tuple[int, int]]
+        The dimensions of the neural network.
+    weight_matrices: list[list[list[float]]]
+            The weight matrices of the neural network.
+
+    Methods
+    -------
+    set_dimensions
+        Set the dimensions of the neural network.
+    set_weight_matrices
+        Set the weight matrices of the neural network.
+    get_dimensions
+        Return the dimensions of the neural network.
+    get_weight_matrices
+        Return the weight matrices of the neural network.
+    write_weights
+        Write weight matrices into a CSV file.
+    create_weights_from_csv
+        Read a CSV file and create a weight matrix per line that is read.
+    sigmoid_function
+        Calculate the output value of a neuron by using the sigmoid function.
+    matrix_multiplication
+        Multiplicate two given matrices.
+    invert
+        Return an inverted matrix.
+    matrix_addition
+        Add the values of two matrices together.
+    detect_one_image
+        Run one image through the neural network and return the values at each layer.
+    calculate_output_error
+        Calculate the error at the output layer.
+    calc_errors_at_each_layer
+        Calculate the error at each layer of the neural network.
+    adjust_weight_matrices
+        Adjust the weight matrices of the neural network and save them in a CSV file.
+    guessed_image_is_correct
+        Check whether the neural network correctly guessed the image.
+    train
+        Run one training iteration.
+    test
+        Test the accuracy of the neural network.
+    set_csv_field_size
+        Set the CSV field size.
+    xavier_initialization
+        Initialize the weights according to the Xavier initialization.
+
     """
 
     def __init__(self, dimensions: list[tuple[int, int]],
@@ -46,31 +95,56 @@ class NeuralNetwork:
 
     def set_dimensions(self, dimensions: list[tuple[int, int]]) -> None:
         """
-        TBD!!!
+        Set the dimensions of the neural network.
+
+        Parameters
+        ----------
+        dimensions: list[tuple[int, int]]
+            The dimensions of the neural network.
+
         """
         self.dimensions: list[tuple[int, int]] = dimensions
 
     def set_weight_matrices(self, weight_matrices: list[list[list[float]]]) -> None:
         """
-        TBD!!!
+        Set the weight matrices of the neural network.
+
+        Parameters
+        ----------
+        weight_matrices: list[list[list[float]]]
+            The weight matrices of the neural network.
+
         """
         self.weight_matrices: list[list[list[float]]] = weight_matrices
 
     def get_dimensions(self) -> list[tuple[int, int]]:
         """
-        TBD!!!
+        Return the dimensions of the neural network.
+
+        Returns
+        -------
+        dimensions: list[tuple[int, int]]
+            The dimensions of the neural network.
+
         """
         return self.dimensions
 
     def get_weight_matrices(self) -> list[list[list[float]]]:
         """
-        TBD!!!
+        Return the weight matrices of the neural network.
+
+        Returns
+        -------
+        weight_matrices: list[list[list[float]]]
+            The weight matrices of the neural network.
+
         """
         return self.weight_matrices
 
     @staticmethod
-    def write_weights(path_to_output: str,
-                  weight_matrices: list[list[list[float]]]) -> None:
+    def write_weights(
+        path_to_output: str, weight_matrices: list[list[list[float]]]
+    ) -> None:
         """
         Write weight matrices into a CSV file.
 
@@ -157,8 +231,9 @@ class NeuralNetwork:
         return y_value
 
     @staticmethod
-    def matrix_multiplication(matrix_1: list[list[float]],
-                              matrix_2: list[list[float]]) -> list[list[float]]:
+    def matrix_multiplication(
+        matrix_1: list[list[float]], matrix_2: list[list[float]]
+    ) -> list[list[float]]:
         """
         Multiplicate two given matrices.
 
@@ -229,8 +304,9 @@ class NeuralNetwork:
         return values_inverted
 
     @staticmethod
-    def matrix_addition(matrix_1: list[list[float]],
-                        matrix_2: list[list[float]]) -> list[list[float]]:
+    def matrix_addition(
+        matrix_1: list[list[float]], matrix_2: list[list[float]]
+    ) -> list[list[float]]:
         """
         Add the values of two matrices together.
 
@@ -257,14 +333,15 @@ class NeuralNetwork:
         if len(matrix_1) != len(matrix_2) or len(matrix_1[0]) != len(matrix_2[0]):
             raise ValueError("The two given matrices can't be added together")
 
-        matrix_sum = [[matrix_1[row][col] + matrix_2[row][col]
-                    for col in range(len(matrix_1[0]))] for row in range(len(matrix_1))]
+        matrix_sum = [
+            [matrix_1[row][col] + matrix_2[row][col]
+             for col in range(len(matrix_1[0]))] for row in range(len(matrix_1))]
 
         return matrix_sum
 
     def detect_one_image(self, image: Image) -> list[list[float]]:
         """
-        Run one image through the neural network and return the values ath each layer.
+        Run one image through the neural network and return the values at each layer.
 
         Parameters
         ----------
@@ -299,49 +376,87 @@ class NeuralNetwork:
 
         return values_at_each_layer
 
-    def calculate_output_error(self, current_image: Image,
-                               values: list[float]) -> list[float]:
+    def calculate_output_error(
+            self, current_image: Image, values: list[float]
+    ) -> list[float]:
         """
-        TBD!!!
+        Calculate the error at the output layer.
+
+        Parameters
+        ----------
+        current_image: Image
+            Image that is currently being run through the neural network.
+        values: list[float]
+            Output values of the output layer.
+
+        Returns
+        -------
+        output_error: list[float]
+            Error at the output layer.
+
         """
         # Calculate the expected values
-        expected_values: list[int] = [0 for _ in range(10)]
-        expected_values[current_image.get_actual_number()] = 1
+        expected_values: list[float] = [0.0 for _ in range(10)]
+        expected_values[current_image.get_actual_number()] = 1.0
 
         # Calculate the error
-        output_error: list[int] = [
+        output_error: list[float] = [
             [expected_values[i] - values[i][0]] for i in range(10)]
 
         return output_error
 
-    def calculate_errors_at_each_layer(
-            self, current_image: Image,
-            values_ate_each_layer: list[list[float]]) -> list[list[float]]:
-            """
-            TBD!!!
-            """
-
-            # Calculate the error at the output layer
-            error_at_current_layer: list[float] = self.calculate_output_error(
-                current_image, values_ate_each_layer[len(values_ate_each_layer) - 1])
-            errors_at_each_layer: list[list[float]] = [error_at_current_layer]
-
-            # Calculate the errors for the other layers
-            for weight_matrix in reversed(self.get_weight_matrices()):
-                error_at_current_layer = NeuralNetwork.matrix_multiplication(
-                    NeuralNetwork.invert(weight_matrix), error_at_current_layer)
-                errors_at_each_layer.insert(0, error_at_current_layer)
-
-            return errors_at_each_layer
-
-    def adjust_weight_matrices(self, values_at_each_layer: list[list[float]],
-                               errors_at_each_layer: list[list[float]],
-                               learning_rate: float) -> None:       
+    def calc_errors_at_each_layer(
+            self, current_image: Image, values_at_each_layer: list[list[float]]
+    ) -> list[list[float]]:
         """
-        TBD!!!!
+        Calculate the error at each layer of the neural network.
+
+        Parameters
+        ----------
+        current_image: Image
+            Image that is currently being run through the neural network.
+        values_ate_each_layer: list[list[float]]
+            Output values of each layer.
+
+        Returns
+        -------
+        errors_at_each_layer: list[list[float]]
+            Calculated error at each layer.
+
+        """
+        # Calculate the error at the output layer
+        error_at_current_layer: list[float] = self.calculate_output_error(
+            current_image, values_at_each_layer[len(values_at_each_layer) - 1])
+        errors_at_each_layer: list[list[float]] = [error_at_current_layer]
+
+        # Calculate the errors for the other layers
+        for weight_matrix in reversed(self.get_weight_matrices()):
+            error_at_current_layer = NeuralNetwork.matrix_multiplication(
+                NeuralNetwork.invert(weight_matrix), error_at_current_layer)
+            errors_at_each_layer.insert(0, error_at_current_layer)
+
+        return errors_at_each_layer
+
+    def adjust_weight_matrices(
+            self, values_at_each_layer: list[list[float]],
+            errors_at_each_layer: list[list[float]], learning_rate: float
+    ) -> None:
+        """
+        Adjust the weight matrices of the neural network and save them in a CSV file.
+
+        Parameters
+        ----------
+        values_at_each_layer: list[list[float]]
+            Output values of each layer.
+        errors_at_each_layer: list[list[float]]
+            Calculated error at each layer.
+        learning_rate: float
+            Factor that controls the change of the weights.
+
         """
         # Initialize the changes
         changed_weight_matrices: list[list[list[float]]] = []
+
         # Go through each layer
         for i in range(len(self.get_weight_matrices())):
             # Calculate Alpha * Ek * Ok * (1 - Ok)
@@ -361,33 +476,58 @@ class NeuralNetwork:
         # Apply the changes
         self.set_weight_matrices(changed_weight_matrices)
 
-    def guessed_image_is_correct(self, image: Image,
-                                 values_at_output_layer: list[float]) -> bool:
+    def guessed_image_is_correct(
+            self, current_image: Image, values_at_output_layer: list[float]
+    ) -> bool:
         """
-        TBD!!!
+        Check whether the neural network correctly guessed the image.
+
+        Parameters
+        ----------
+        current_image: Image
+            Image that is currently being run through the neural network.
+        values_at_output_layer: list[float]
+            Output values of the output layer.
+
+        Returns
+        -------
+        bool
+            True if the index of the max value of the output values of the output
+            layer is equal to the actual number, otherwise False.
+
         """
         return (values_at_output_layer.index(max(values_at_output_layer)) ==
-                image.get_actual_number())
+                current_image.get_actual_number())
 
-    def train(self, training_data: list[Image], learning_rate: float,
-              path_to_csv_file) -> None:
+    def train(
+            self, training_data: list[Image], learning_rate: float,
+            path_to_csv_file: str
+    ) -> None:
         """
-        TBD!!!
+        Run one training iteration.
+
+        Parameters
+        ----------
+        training_data: list[Image]
+            The (60.000) images that are used for training.
+        learning_rate: float
+            Factor that controls the change of the weights.
+        path_to_csv_file: str
+            Path to the CSV file in which the adjusted weight matrices shall be
+            written to.
+
         """
         for count, single_image in enumerate(training_data):
-            # Print a message each one thousand image
+            # Print a message after one thousand images
             if count % 1000 == 0 and count != 0:
-                break
                 print("Elapsed", count, "images.")
-            if count % 10 == 0:
-                print(count)
 
             # Calculate the output values at each layer
             values_at_each_layer: list[list[float]] = self.detect_one_image(
                 single_image)
 
             # Calculate the error at each layer
-            errors_at_each_layer: list[list[float]] = self.calculate_errors_at_each_layer(
+            errors_at_each_layer: list[list[float]] = self.calc_errors_at_each_layer(
                 single_image, values_at_each_layer)
 
             # Apply the changes to the weight matrices
@@ -399,13 +539,24 @@ class NeuralNetwork:
 
     def test(self, testing_data: list[Image]) -> int:
         """
-        TBD!!!
+        Test the accuracy of the neural network.
+
+        Parameters
+        ----------
+        testing_data: list[Image]
+            The (10.000) images that are used for testing.
+
+        Returns
+        -------
+        correct_images: int
+            Number of correctly guessed images.
+
         """
         # Initialize the return value
         correct_images: int = 0
 
         for count, single_image in enumerate(testing_data):
-            # Print a message each one thousand image
+            # Print a message after one thousand images
             if count % 1000 == 0 and count != 0:
                 print("Elapsed", count, "images.")
 
@@ -414,7 +565,8 @@ class NeuralNetwork:
                 single_image)
 
             if self.guessed_image_is_correct(
-                single_image, values_at_each_layer[len(values_at_each_layer) - 1]):
+                single_image, values_at_each_layer[len(values_at_each_layer) - 1]
+            ):
                 correct_images += 1
 
         return correct_images
@@ -426,8 +578,9 @@ class NeuralNetwork:
 
         Notes
         -----
-        This function is necessary to avoid the csv error: 'field larger than field limit'.
-        Also, this functions works in a try except frame to avoid the stackoverflow error.
+        This function is included  to avoid the following csv error:
+        'field larger than field limit'. Also, this functions works in a try except
+        frame to also avoid the stackoverflow error.
 
         """
         # Get the max possible size as an initial value
@@ -446,7 +599,13 @@ class NeuralNetwork:
 
     def xavier_initialization(self, matrix_path: str) -> None:
         """
-        TBD.
+        Initialize the weights according to the Xavier initialization.
+
+        Parameters
+        ----------
+        matrix_path
+            File in which the weight matrices shall be saved.
+
         """
         # Check if weight matrices were already created
         folder_content = os.listdir(matrix_path)
@@ -468,9 +627,6 @@ class NeuralNetwork:
                     # Keep the .gitkeep file
                     if file != ".gitkeep":
                         os.remove(matrix_path + "/" + file)
-            # Aboard the script otherwise
-            else:
-                return 0
 
         weight_matrices: list[list[list[float]]] = []
 

@@ -40,6 +40,8 @@ pylint:
   run: true           # using default options (see https://github.com/pylint-dev/pylint/blob/main/pylintrc)
   disable:
     - E1101           # no-member (https://pylint.readthedocs.io/en/latest/user_guide/messages/error/no-member.html#no-member-e1101)
+    - R1728           # List comprehension is more useful for this project than generators
+    - C0200           # Iteration with range and len is used for this project
 
 mypy:
   run: true

@@ -177,6 +177,9 @@ class NeuralNetwork:
             for weight_matrix in weight_matrices:
                 csv_writer.writerow([weight_matrix])
 
+            # Close the file
+            csv_file.close()
+
     @staticmethod
     def create_weights_from_csv(path_to_csv_file: str) -> list[list[list[float]]]:
         """
@@ -204,6 +207,9 @@ class NeuralNetwork:
             for row in csv_reader:
                 # Read the weight matrix & create a WeightMatrix object
                 weight_matrix_list.append(ast.literal_eval(row["weights"]))
+
+            # Close the file
+            csv_file.close()
 
         # Return the newly created lists
         return weight_matrix_list

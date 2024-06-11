@@ -101,6 +101,9 @@ class Image:
             # Ignore the first 16 bytes since the image bytes only start at offset 16
             images = list(idx_file.read()[16:])
 
+            # Close the file
+            idx_file.close()
+
         # Initialize the return value
         all_image_pixels: list[list[float]] = []
 
@@ -142,6 +145,9 @@ class Image:
             # Ignore the first 8 bytes since the image labels only start at offset 8
             all_image_labels = list(idx_file.read()[8:])
 
+            # Close the file
+            idx_file.close()
+
         return all_image_labels
 
     @staticmethod
@@ -179,6 +185,9 @@ class Image:
             for pixels, label in zip(all_image_pixels, all_image_labels):
                 # Add the image label to the image pixels
                 csv_writer.writerow([label, pixels])
+
+            # Close the file
+            csv_file.close()
 
     @staticmethod
     def create_images_from_csv(path_to_csv_file: str) -> list[Image]:
@@ -227,6 +236,9 @@ class Image:
 
                 # Create an image object and add it to the return value
                 image_list.append(Image(pixels, label))
+
+            # Close the file
+            csv_file.close()
 
         # Return the list of all images created
         return image_list

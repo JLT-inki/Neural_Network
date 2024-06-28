@@ -7,11 +7,9 @@ import sys
 from classes.neural_network import NeuralNetwork
 from classes.user_interface import UserInterface
 
-# Global constants
-# ===================================================================
 # Size of the neural network
 SIZE_NEURAL_NET: list[tuple[int, int]] = [(81, 784), (10, 81)]
-# Path to files
+# Path to the weight matrices
 PATH_TO_WEIGHTS: str = "./weight_matrices/altered_weights.csv"
 
 def main() -> int:

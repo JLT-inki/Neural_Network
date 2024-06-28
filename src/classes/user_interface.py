@@ -16,6 +16,8 @@ from classes.neural_network import NeuralNetwork
 # Constants for the images
 PATH_TO_TRAINING_IMAGES: str = "./images/csv/training_data.csv"
 PATH_TO_TESTING_IMAGES: str = "./images/csv/testing_data.csv"
+# Path to the weight matrices
+PATH_TO_WEIGHTS: str = "./weight_matrices/altered_weights.csv"
 
 # Used learning rate
 LEARNING_RATE: float = 0.001
@@ -538,7 +540,7 @@ class UserInterface:
         self.change_buttons()
 
         # Perform the training
-        self.get_neural_net().train(training_images, LEARNING_RATE, PATH_TO_TRAINING_IMAGES)
+        self.get_neural_net().train(training_images, LEARNING_RATE, PATH_TO_WEIGHTS)
 
         # Update the status label indicating that the training has finished
         self.update_status("Finished training!")

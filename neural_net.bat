@@ -4,7 +4,7 @@ if exist .venv (
     Call .\.venv\Scripts\activate
 ) else (
     :: Create a Python virtual Envrionment
-    python -m venv .venv
+    py -m venv .venv
 
     :: Activate the Python Virtual Envrionment
     Call .\.venv\Scripts\activate

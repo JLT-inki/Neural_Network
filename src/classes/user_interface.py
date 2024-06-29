@@ -557,14 +557,17 @@ class UserInterface:
         # Get the testing images
         test_images: list[Image] = Image.create_images_from_csv(PATH_TO_TESTING_IMAGES)
 
+        # Get the number of images to properly present the accuracy
+        number_of_images: int = len(test_images)
+
         # Update the status label to indicate that the net is testing
         self.update_status("Currently testing...")
 
         # Disable all buttons
         self.change_buttons()
 
-        # Test the neural net
-        accuracy: float = self.get_neural_net().test(test_images) / 10000
+        # Test the neural net and get the accuracy
+        accuracy: float = self.get_neural_net().test(test_images) / number_of_images
 
         # Display the accuracy
         self.update_status("Accuracy:\t" + str(accuracy) + "%")

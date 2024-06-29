@@ -133,6 +133,7 @@ class UserInterface:
 
         # Initialize the main window
         self.set_main_window(tkinter.Tk())
+        self.get_main_window().title("Neural Network")
 
         # Initialize the drawing pad
         self.set_drawing_pad(tkinter.Canvas(self.get_main_window(), width=224,
